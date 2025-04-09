@@ -1,5 +1,4 @@
 package com.example.enroll.controller;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -11,13 +10,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import com.example.enroll.StudentService;
 import com.example.enroll.model.Enrollment;
 import com.example.enroll.model.LoginBean;
 import com.example.enroll.model.Program;
 import com.example.enroll.model.Student;
-
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -26,11 +23,9 @@ public class StudentController {
 	@Autowired
 	private StudentService studentService;
 
-	// Inject HttpSession
 	@Autowired
 	private HttpSession session;
 
-	// Show registration form
 	@GetMapping("/")
 	public String showRegistrationForm(Model model) {
 		model.addAttribute("student", new Student()); // Add an empty student object for registration
@@ -49,22 +44,16 @@ public class StudentController {
 			}
 			return "redirect:/students/programs"; // Redirect to the students' list page
 		}
-
-		// If login fails, return to the index page with an error message
 		model.addAttribute("student", new Student()); // Add an empty student object for registration
 		model.addAttribute("loginForm", loginForm); // Retain the login form values
 		model.addAttribute("loginError", "Invalid username or password"); // Set the error message
 		return "index"; // Return to index.html to show the login form again
 	}
-
-	// Handle registration form submission
 	@PostMapping("/students/register")
 	public String registerStudent(@ModelAttribute Student student) {
 		studentService.registerStudent(student);
 		return "success"; // Redirect after successful registration
 	}
-
-	// List all programs
 	@GetMapping("/students/programs")
 	public String listPrograms(Model model) {
 		model.addAttribute("programs", studentService.findAllProgram());
